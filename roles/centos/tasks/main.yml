@@ -5,4 +5,59 @@
   notify:
    - restart fail2ban
     
+- name: Install zeroMQ dependancies
+  yum: name=libtool,autoconf,automake,uuid-devel state=latest
 
+- name: Get a C++ compiler package # Is this the best way to go about doing this?
+  yum: name=gcc,gcc-c++,kernel-devel state=latest
+
+- name: Create directory for zeroMQ build
+  file: path=/zeromq/ state=directory mode=0744
+
+
+- name: Get zeroMQ tarball
+  get_url: url=http://download.zeromq.org/zeromq-3.2.2.tar.gz dest=/zeromq/ mode=0744
+
+- name: Untar and uncompress (g-zip compression) the zeroMQ tarball
+  register: zmqresult
+  command: tar -xvf zeromq-3.2.2.tar.gz chdir=/zeromq/ creates=/zeromq/zeromq-3.2.2
+
+- name: configure ZMQ
+  when: zmqresult|changed
+  command: ./configure chdir=/zeromq/zeromq-3.2.2/ 
+
+- name: Make ZMQ
+  when: zmqresult|changed
+  command: make chdir=/zeromq/zeromq-3.2.2/ 
+
+- name: Make install ZMQ
+  when: zmqresult|changed
+  command: make install chdir=/zeromq/zeromq-3.2.2/
+
+- name: Create directory for zeroMQ build
+  file: path=/nanomsg/ state=directory mode=0744
+
+- name: Get Nanomsg tar
+  get_url: url=http://download.nanomsg.org/nanomsg-0.4-beta.tar.gz dest=/nanomsg/ mode=0744
+
+- name: Untar and uncompress nanomsg
+  register: nanoresult
+  command: tar -xvf nanomsg-0.4-beta.tar.gz chdir=/nanomsg/
+
+- name: configure Nanomsg
+  when: nanoresult|changed
+  command: ./configure chdir=/nanomsg/nanomsg-0.4-beta/
+
+- name: Make Nanomsg
+  when: nanoresult|changed
+  command: make chdir=/nanomsg/nanomsg-0.4-beta/
+
+- name: Make install Nanomsg
+  when: nanoresult|changed
+  command: make install chdir=/nanomsg/nanomsg-0.4-beta/
+
+
+
+
+- name: Create nessecary links
+  command: ldconfig chdir=/zeromq/zeromq-3.2.2/
