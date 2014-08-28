@@ -1,8 +1,0 @@
----
-- hosts: all
-  vars:
-  remote_user: vrecan
-  tasks:
-  - name: ensure apache is at the latest version
-    yum: pkg=httpd state=latest
-    sudo: yes
