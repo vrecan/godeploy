@@ -5,6 +5,6 @@
   user: root
 
   roles:
-    - { role: goiostat, tags: ["goiostat", "perceptor"] }
     - { role: golang, tags: ["system"] }
     - { role: centos, tags: ["system"] }
+    - { role: goiostat, tags: ["goiostat", "perceptor"] }
