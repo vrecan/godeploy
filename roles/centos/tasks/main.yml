@@ -1,10 +1,36 @@
 ---
 
+- user: name=perceptor shell=/sbin/nologin
+
+- user: name=capillaryDeploy
+
+- user: name=elasticsearch shell=/sbin/nologin
+
+- user: name=cassandra shell=/sbin/nologin
+
+- name: Create ssh dir for deployment
+  file: path=/home/capillaryDeploy/.ssh state=directory mode=0700 owner=capillaryDeploy group=capillaryDeploy
+
+- name: Copy ssh pub key for deploy user
+  copy: src=~/.ssh/deploy_rsa.pub dest=/home/capillaryDeploy/.ssh/id_rsa.pub mode=600 owner=capillaryDeploy group=capillaryDeploy
+
+- name: Copy ssh key for deploy user
+  copy: src=~/.ssh/deploy_rsa dest=/home/capillaryDeploy/.ssh/id_rsa mode=600  owner=capillaryDeploy group=capillaryDeploy
+
+- name: copy pub key to authorized keys
+  copy: src=~/.ssh/deploy_rsa.pub dest=/home/capillaryDeploy/.ssh/authorized_keys mode=600  owner=capillaryDeploy group=capillaryDeploy
+
 - name: Install fail2ban to secure ssh
   yum: name=fail2ban state=latest
   notify:
    - restart fail2ban
-    
+
+- name: Setup /usr/local/lib in ldconfig
+  copy: src=libs.conf dest=/etc/ld.so.conf.d/libs.conf
+
+- name: Setup PKG_CONFIG_PATH
+  copy: src=pkg-conf.sh dest=/etc/profile.d/pkg-conf.sh
+
 - name: Install zeroMQ dependancies
   yum: name=libtool,autoconf,automake,uuid-devel state=latest
 
@@ -42,7 +68,7 @@
 
 - name: Untar and uncompress nanomsg
   register: nanoresult
-  command: tar -xvf nanomsg-0.4-beta.tar.gz chdir=/nanomsg/
+  command: tar -xvf nanomsg-0.4-beta.tar.gz chdir=/nanomsg/ creates=/nanomsg/nanomsg-0.4-beta
 
 - name: configure Nanomsg
   when: nanoresult|changed
@@ -56,8 +82,5 @@
   when: nanoresult|changed
   command: make install chdir=/nanomsg/nanomsg-0.4-beta/
 
-
-
-
 - name: Create nessecary links
-  command: ldconfig chdir=/zeromq/zeromq-3.2.2/
+  command: ldconfig
