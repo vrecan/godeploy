@@ -1,0 +1,18 @@
+---
+- name: install deps
+  yum: name=mercurial,git state=latest
+
+- name: clone git
+  sudo: true
+  sudo_user: capillaryDeploy
+  git: repo=git@github.com:CapillarySoftware/goforward.git
+       dest=/home/capillaryDeploy/go/src/github.com/CapillarySoftware/goforward
+       accept_hostkey=yes
+       version=master
+
+- name: install goforward
+  sudo: true
+  sudo_user: capillaryDeploy
+  shell: ./ansible_install.sh
+         chdir=/home/capillaryDeploy/go/src/github.com/CapillarySoftware/goforward
+
