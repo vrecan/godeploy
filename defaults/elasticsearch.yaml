@@ -1,0 +1,5 @@
+---
+
+elasticsearch_cluster_name: "perceptor"
+elasticsearch_version: 1.3
+elastic_conf: "/etc/elasticsearch/elasticsearch.yml"

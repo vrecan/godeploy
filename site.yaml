@@ -3,13 +3,13 @@
 - name: apply go to all servers
   hosts: all
   user: root
+  vars_files:
+   - defaults/elasticsearch.yaml
 
   roles:
     - { role: golang, tags: ["system"] }
     - { role: centos, tags: ["system"] }
-    - { role: elasticsearch, cluster_name: "perceptor", elasticsearch_version: 1.3, 
-        elastic_conf: "/etc/elasticsearch/elasticsearch.yml",
-      tags: ["system", "elasticsearch"] }
+    - { role: elasticsearch, tags: ["system", "elasticsearch"] }
     - { role: goiostat, tags: ["goiostat", "perceptor"] }
     - { role: goforward, tags: ["goforward", "perceptor"] }
     - { role: gomasticate, tags: ["gomasticate", "perceptor"] }
