@@ -1,0 +1,12 @@
+---
+galaxy_info:
+  author: Matthew Finlayson
+  description: Installs and configures consul
+  company: CapillarySoftware
+  platforms:
+    - name: Centos
+      versions:
+        - 6.5
+  categories:
+    - system
+dependencies: []

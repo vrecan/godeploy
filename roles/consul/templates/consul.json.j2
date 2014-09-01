@@ -1,0 +1,20 @@
+{
+{% if consul_is_ui == 'true' %}
+  "ui_dir": "{{ consul_home }}/dist",
+{% endif %}
+{% if consul_bootstrap == 'false' %}
+  "start_join": {{ consul_servers|to_nice_json }},
+{% endif %}
+  "data_dir": "{{ consul_home }}/data",
+  "log_level": "{{ consul_log_level }}",
+  "node_name": "{{ consul_node_name }}",
+  "encrypt" : "{{ consul_encrypt }}",
+  "server": {{ consul_is_server }},
+  "bind_addr": "{{ consul_bind_address }}",
+  "datacenter": "{{ consul_datacenter }}",
+  "rejoin_after_leave": {{ consul_rejoin_after_leave }},
+  "bootstrap": {{ consul_bootstrap }},
+  "enable_syslog": true
+
+}
+

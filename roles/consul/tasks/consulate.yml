@@ -1,0 +1,12 @@
+---
+- name: install deps
+  yum: name='{{item}}' state=latest
+  with_items:
+    - python-pip
+    - python-devel
+
+- name: install python module consulate
+  pip: name={{ item }}
+  with_items:
+    - tornado
+    - consulate
