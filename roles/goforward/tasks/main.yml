@@ -13,6 +13,11 @@
 - name: install goforward
   sudo: true
   sudo_user: capillaryDeploy
+  environment:
+   GOPATH: /home/capillaryDeploy/go
+   GOROOT: /usr/local/go
+   GOBIN: /home/capillaryDeploy/go/bin
+   PATH: $GOBIN:{{ ansible_env.PATH }}
   shell: ./ansible_install.sh
          chdir=/home/capillaryDeploy/go/src/github.com/CapillarySoftware/goforward
 

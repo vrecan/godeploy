@@ -1,4 +1,8 @@
 Basic install for perceptor using ansible
+
+<h2>install deps</h2>
+`ansible-galaxy install savagegus.consul`
+
 <h2>Deploy</h2>
 <h3>Install goiostat:</h3>
 <pre>
@@ -24,3 +28,8 @@ ansible-playbook site.yaml -i hosts  -t system
 ansible-playbook site.yaml -i hosts
 </code>
 </pre>
+
+<h2>Connect to consul web ui</h2>
+`ssh -N -f -L 8500:localhost:8500 root@104.130.3.36\n
+http://localhost:8500/ui
+`

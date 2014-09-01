@@ -1,7 +1,7 @@
 ---
 
-- name: apply go to all servers
-  hosts: all
+- name: apply go to perceptors
+  hosts: perceptor
   user: root
   vars_files:
    - defaults/elasticsearch.yaml
@@ -13,3 +13,22 @@
     - { role: goiostat, tags: ["goiostat", "perceptor"] }
     - { role: goforward, tags: ["goforward", "perceptor"] }
     - { role: gomasticate, tags: ["gomasticate", "perceptor"] }
+#    - { role: consul, tags: ["consul", "perceptor"] }
+    - { role: consul,
+        consul_is_ui: "true",
+        consul_is_server: "true",
+        consul_bootstrap: "true",
+         tags: ["consul"] }
+
+
+- name: Apply to web
+  user: root
+  hosts: web
+  #vars_files:
+   #- defaults/elasticsearch.yaml
+  roles:
+    - { role: golang, tags: ["system"] }
+    - { role: centos, tags: ["system"] }
+    - { role: goiostat, tags: ["goiostat", "perceptor"] }
+    - { role: goforward, tags: ["goforward", "perceptor"] }
+  

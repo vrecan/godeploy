@@ -1,5 +1,21 @@
 ---
 
-elasticsearch_cluster_name: "perceptor"
 elasticsearch_version: 1.3
 elastic_conf: "/etc/elasticsearch/elasticsearch.yml"
+es_cluster_name: "perceptor"
+es_disable_scripting: true
+es_limit_cache_size: true
+
+# By default we let ES allocate half of the available
+# memory on each host.
+es_heap_size: "{{ ansible_memtotal_mb / 2 }}"
+# mlockall will disable swapping for the ES process
+es_mlockall: true
+
+# index settings
+es_refresh_interval: "1s"
+es_number_of_shards: 1
+es_number_of_replicas: "{{ 1 if 'esnodes' in groups else 0 }}"
+# Auto-detect IP address to bind on based on the configured network interface
+es_bind_iface: "{{ hostvars[inventory_hostname].get('main_iface', 'eth0') }}"
+es_bind_ip: "{{ hostvars[inventory_hostname]['ansible_' + bind_iface ].ipv4.address }}"

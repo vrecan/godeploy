@@ -82,5 +82,5 @@
   when: nanoresult|changed
   command: make install chdir=/nanomsg/nanomsg-0.4-beta/
 
-- name: Create nessecary links
+- name: Create nessecary links (ldconfig)
   command: ldconfig
