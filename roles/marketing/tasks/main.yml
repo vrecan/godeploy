@@ -1,0 +1,23 @@
+---
+- name: install deps
+  yum: name=mercurial,git state=latest
+
+- name: install magic thingy
+  register: magicThingy
+  command: mkdir ~/this creates=~/this
+
+- debug: magicThingy
+
+- name: do soemthing if we installed the thingy
+  when: magicThingy|changed
+  shell: echo "woo"
+
+- name: clone git
+  sudo: true
+  sudo_user: capillaryDeploy
+  git: repo=git@github.com:CapillarySoftware/marketing.git
+       dest=/home/capillaryDeploy/go/src/github.com/CapillarySoftware/marketing
+       accept_hostkey=yes
+       version=develop
+
+

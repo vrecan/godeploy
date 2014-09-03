@@ -1,6 +1,6 @@
 ---
 - name: install deps
-  yum: name=mercurial,git state=latest
+  apt: name=mercurial,git state=latest
 
 - name: clone git
   sudo: true

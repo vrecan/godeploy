@@ -1,0 +1,22 @@
+---
+- name: Get Nanomsg tar
+  get_url: url=http://download.nanomsg.org/nanomsg-0.4-beta.tar.gz dest=/nanomsg/ mode=0744
+
+- name: Untar and uncompress nanomsg
+  register: nanoresult
+  command: tar -xvf nanomsg-0.4-beta.tar.gz chdir=/nanomsg/ creates=/nanomsg/nanomsg-0.4-beta
+
+- name: configure Nanomsg
+  when: nanoresult|changed
+  command: ./configure chdir=/nanomsg/nanomsg-0.4-beta/
+
+- name: Make Nanomsg
+  when: nanoresult|changed
+  command: make chdir=/nanomsg/nanomsg-0.4-beta/
+
+- name: Make install Nanomsg
+  when: nanoresult|changed
+  command: make install chdir=/nanomsg/nanomsg-0.4-beta/
+
+- name: Create nessecary links (ldconfig)
+  command: ldconfig

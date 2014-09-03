@@ -1,0 +1,32 @@
+---
+
+- user: name=capillaryDeploy
+
+- name: Create ssh dir for deployment
+  file: path=/home/capillaryDeploy/.ssh state=directory mode=0700 owner=capillaryDeploy group=capillaryDeploy
+
+- name: Copy ssh pub key for deploy user
+  copy: src=~/.ssh/deploy_rsa.pub dest=/home/capillaryDeploy/.ssh/id_rsa.pub mode=600 owner=capillaryDeploy group=capillaryDeploy
+
+- name: Copy ssh key for deploy user
+  copy: src=~/.ssh/deploy_rsa dest=/home/capillaryDeploy/.ssh/id_rsa mode=600  owner=capillaryDeploy group=capillaryDeploy
+
+- name: copy pub key to authorized keys
+  copy: src=~/.ssh/deploy_rsa.pub dest=/home/capillaryDeploy/.ssh/authorized_keys mode=600  owner=capillaryDeploy group=capillaryDeploy
+
+- name: Install fail2ban to secure ssh
+  apt: name=fail2ban state=latest
+  notify:
+   - restart fail2ban
+
+- name: Setup /usr/local/lib in ldconfig
+  copy: src=libs.conf dest=/etc/ld.so.conf.d/libs.conf
+
+- name: Setup PKG_CONFIG_PATH
+  copy: src=pkg-conf.sh dest=/etc/profile.d/pkg-conf.sh
+
+- name: Install build dependancies
+  apt: name=libtool,autoconf,automake,uuid-dev state=latest
+
+- name: Get a C++ compiler package # Is this the best way to go about doing this?
+  apt: name=gcc,g++,build-essential,pkg-config state=latest

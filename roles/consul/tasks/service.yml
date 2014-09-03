@@ -1,1 +1,1 @@
-#- service: name=consul state=running enabled=yes
+- service: name=consul state=running enabled=yes

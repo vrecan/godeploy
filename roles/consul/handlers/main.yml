@@ -1,5 +1,5 @@
 ---
 - name: restart consul
-  action: service name=consul state=restarted
+  action: service name=consul state=restarted enabled=yes
 - name: restart dnsmasq
   service: name=dnsmasq state=restarted enabled=yes
