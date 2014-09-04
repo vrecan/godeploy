@@ -27,7 +27,9 @@
   user: root
   roles:
     - { role: golang, tags: ["system"] }
-    - { role: centos, tags: ["system"] }
+    - { role: ubuntu, tags: ["system"] }
+    - { role: zeromq, tags: ["system", "zeromq"] }
+    - { role: nanomsg, tags: ["system", "nanomsg"] }
     - { role: goiostat, tags: ["goiostat", "perceptor"] }
     - { role: goforward, tags: ["goforward", "perceptor"] }
     - { role: marketing, tags: ["marketing", "web"] }
@@ -35,6 +37,6 @@
         consul_is_ui: "false",
         consul_is_server: "false",
         consul_bootstrap: "false",
-        consul_servers: ['104.130.3.36'], #should figure out a way to make this dynamic
+        consul_servers: ['23.253.159.164'], #should figure out a way to make this dynamic
          tags: ["consul"] }
   

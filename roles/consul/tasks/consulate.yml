@@ -1,9 +1,9 @@
 ---
 - name: install deps
-  yum: name='{{item}}' state=latest
+  apt: name='{{item}}' state=latest
   with_items:
     - python-pip
-    - python-devel
+    - python-dev
 
 - name: install python module consulate
   pip: name={{ item }}
