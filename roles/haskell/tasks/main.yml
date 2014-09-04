@@ -1,0 +1,16 @@
+---
+
+- name: Add universe and other repos
+  apt_repository: repo="deb http://archive.ubuntu.com/ubuntu trusty main universe restricted multiverse" state=present
+
+- name: Run apt-get update
+  apt: update_cache=yes
+
+- name: Install haskell
+  apt: name=haskell-platform state=latest
+
+- name: Install deps
+  apt: name=libcurl4-gnutls-dev,lib32z1-dev state=latest
+
+- name: Update cabal
+  shell: cabal update;cabal install cabal-install

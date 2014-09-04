@@ -8,7 +8,7 @@
 
   roles:
     - { role: golang, tags: ["system"] }
-    - { role: ubuntu, tags: ["system"] }
+    - { role: ubuntu, tags: ["system", "ubuntu"] }
     - { role: elasticsearch, tags: ["system", "elasticsearch"] }
     - { role: zeromq, tags: ["system", "zeromq"] }
     - { role: nanomsg, tags: ["system", "nanomsg"] }
@@ -27,7 +27,7 @@
   user: root
   roles:
     - { role: golang, tags: ["system"] }
-    - { role: ubuntu, tags: ["system"] }
+    - { role: ubuntu, tags: ["system", "ubuntu"] }
     - { role: zeromq, tags: ["system", "zeromq"] }
     - { role: nanomsg, tags: ["system", "nanomsg"] }
     - { role: goiostat, tags: ["goiostat", "perceptor"] }
@@ -39,7 +39,7 @@
         consul_bootstrap: "false",
         consul_servers: ['23.253.159.164'], #should figure out a way to make this dynamic
          tags: ["consul"] }
-
+    - { role: haskell, tags: ["haskell", "web"] }
     - role: nginx 
       tags: 
        - nginx
@@ -58,22 +58,3 @@
                                    "proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for":"",
                                    "proxy_set_header Host $host":"",
                                    proxy_pass: "http://0.0.0.0:3000/mail"}
-    # - { role: nginx, tags: ["nginx", "web"],
-    #     nginx_http_params: {
-    #       sendfile: "on",
-    #       access_log: "/var/log/nginx/access.log",
-    #       },
-    #       nginx_sites: {
-    #        server:   
-    #        - { file_name: Marketing,
-    #        listen: 8080,
-    #        server_name: localhost,
-    #        root: "/var/www/Marketing/html",
-    #        location1: {name: / "},
-    #        location2: {name: /mail,proxy_set_header: X-Real-IP $remote_addr,
-    #                                proxy_set_header: X-Forwarded-For $proxy_add_x_forwarded_for",
-    #                                proxy_set_header: Host $host,
-    #                                proxy_pass: "http://0.0.0.0:3000/mail"}
-    #         }
-    #       }
-    #   }

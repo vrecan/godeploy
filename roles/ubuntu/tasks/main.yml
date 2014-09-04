@@ -25,6 +25,15 @@
 - name: Setup PKG_CONFIG_PATH
   copy: src=pkg-conf.sh dest=/etc/profile.d/pkg-conf.sh
 
+- name: Add universe and other repos
+  apt_repository: repo="deb http://archive.ubuntu.com/ubuntu trusty main universe restricted multiverse" state=present
+
+- name: Run apt-get update
+  apt: update_cache=yes
+
+- name: Upgrade all packages
+  apt: upgrade=dist
+
 - name: Install build dependancies
   apt: name=libtool,autoconf,automake,uuid-dev state=latest
 
