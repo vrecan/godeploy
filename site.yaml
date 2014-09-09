@@ -3,13 +3,11 @@
 - name: apply go to perceptors
   hosts: perceptor
   user: root
-  vars_files:
-   - defaults/elasticsearch.yaml
+#  vars_files:
 
   roles:
     - { role: golang, tags: ["system"] }
     - { role: ubuntu, tags: ["system", "ubuntu"] }
-    - { role: elasticsearch, tags: ["system", "elasticsearch"] }
     - { role: zeromq, tags: ["system", "zeromq"] }
     - { role: nanomsg, tags: ["system", "nanomsg"] }
     - { role: goiostat, tags: ["goiostat", "perceptor"] }
@@ -20,6 +18,16 @@
         consul_is_server: "true",
         consul_bootstrap: "true",
          tags: ["consul"] }
+    - { role: Stouts.elasticsearch,
+        elasticsearch_version: "1.3.2",
+        elasticsearch_apt_java_package: "oracle-java7-installer",
+        elasticsearch_max_open_files: 65535,
+        elasticsearch_cluster_name: "perceptor",
+        elasticsearch_memory_bootstrap_mlockall: "true" ,
+        elasticsearch_heap_size: 512m ,
+        elasticsearch_network_host: "['_eth1:ipv4_', '_local_']" ,
+        tags: ["db", "es"]
+      }
 
 
 - name: Apply to web
