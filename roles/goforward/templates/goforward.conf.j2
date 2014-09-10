@@ -1,0 +1,9 @@
+# goforward (Upstart unit)
+description "forwarding service for syslog and other services into the perceptor"
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on runlevel [06]
+chdir /usr/local/perceptor/goforward/
+exec sudo -u perceptor /usr/local/perceptor/goforward/goforward -port={{ syslog_udp_port }}
+respawn
+respawn limit 10 10
+kill timeout 60

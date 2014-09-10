@@ -1,5 +1,8 @@
 ---
 
+- name: add perceptor user if it doesn't exist
+  action: user name=perceptor shell=/sbin/nologin 
+
 - name: install deps
   apt: name=mercurial,git state=latest
 
@@ -26,10 +29,19 @@
 - name: mk install dir
   command: "mkdir -p {{ install }} creates={{ install }}"
 
+- name: set permissions
+  command: "chown  perceptor {{ install }} "
+
 - name: copy binary
   command: "cp -f {{ compile }}/goforward {{ install }}/ "
 
 - name: copy log conf
   command: "cp -f {{ compile }}/seelog.xml {{ install }}/ "
+
+- name: copy service file
+  template: "src=goforward.conf.j2 dest=/etc/init/goforward.conf owner=root group=root mode=0644"
+
+- name: Start/Restart service
+  service: name=goforward state=restarted enabled=yes
 
 

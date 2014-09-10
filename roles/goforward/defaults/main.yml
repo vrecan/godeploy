@@ -1,0 +1,8 @@
+gopath: /home/capillaryDeploy/go
+gobin: /home/capillaryDeploy/go/bin
+goroot: /usr/local/go
+path: "{{ gobin }}:{{ ansible_env.PATH }}"
+install: /usr/local/perceptor/goforward
+compile: "{{ gopath }}/src/github.com/CapillarySoftware/goforward"
+syslog_tcp_port: 2024
+syslog_udp_port: 2025
