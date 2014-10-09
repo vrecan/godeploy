@@ -1,0 +1,9 @@
+# goforward (Upstart unit)
+description "forwarding service for syslog and other services into the perceptor"
+start on (local-filesystems and net-device-up IFACE!=lo)
+stop on runlevel [06]
+chdir /usr/local/perceptor/gomasticate/
+exec sudo -u perceptor /usr/local/perceptor/gomasticate/gomasticate 
+respawn
+respawn limit 10 10
+kill timeout 60

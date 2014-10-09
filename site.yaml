@@ -26,6 +26,7 @@
         elasticsearch_memory_bootstrap_mlockall: "true" ,
         elasticsearch_heap_size: 512m ,
         elasticsearch_network_host: "['_eth1:ipv4_', '_local_']" ,
+        elasticsearch_index_number_of_shards: 2,
         tags: ["db", "es"]
       }
 

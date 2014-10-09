@@ -1,0 +1,6 @@
+gopath: /home/capillaryDeploy/go
+gobin: /home/capillaryDeploy/go/bin
+goroot: /usr/local/go
+path: "{{ gobin }}:{{ goroot }}/bin:{{ ansible_env.PATH }}"
+install: /usr/local/perceptor/gomasticate
+compile: "{{ gopath }}/src/github.com/CapillarySoftware/gomasticate"

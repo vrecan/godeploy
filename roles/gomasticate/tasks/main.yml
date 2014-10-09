@@ -1,4 +1,8 @@
 ---
+
+- name: add perceptor user if it doesn't exist
+  action: user name=perceptor shell=/sbin/nologin 
+
 - name: install deps
   apt: name=mercurial,git state=latest
 
@@ -6,18 +10,39 @@
   sudo: true
   sudo_user: capillaryDeploy
   git: repo=git@github.com:CapillarySoftware/gomasticate.git
-       dest=/home/capillaryDeploy/go/src/github.com/CapillarySoftware/gomasticate
+       dest="{{ compile }}"
        accept_hostkey=yes
        version=master
 
-- name: install gomasticate
+- name: compile and build
   sudo: true
   sudo_user: capillaryDeploy
   environment:
-   GOPATH: /home/capillaryDeploy/go
-   GOROOT: /usr/local/go
-   GOBIN: /home/capillaryDeploy/go/bin
-   PATH: $GOBIN:{{ ansible_env.PATH }}
-  shell: ./ansible_install.sh
-         chdir=/home/capillaryDeploy/go/src/github.com/CapillarySoftware/gomasticate
+    GOPATH: "{{ gopath }}"
+    GOROOT: "{{ goroot }}"
+    GOBIN: "{{ gobin }}"
+    PATH: "{{ path }}"
+    INSTALL: "{{ install }}"
+  shell: echo $PATH; echo $GOPATH; ./ansible_install.sh
+         chdir="{{ compile }}"
 
+- name: mk install dir
+  command: "mkdir -p {{ install }} creates={{ install }}"
+
+- name: set permissions
+  command: "chown  perceptor {{ install }} "
+
+- name: copy binary
+  command: "cp -f {{ compile }}/gomasticate {{ install }}/ "
+
+- name: copy yaml conf file
+  command: "cp -f {{ compile }}/conf.yaml {{ install }}/"
+
+- name: copy log conf
+  command: "cp -f {{ compile }}/seelog.xml {{ install }}/ "
+
+- name: copy service file
+  template: "src=gomasticate.conf.j2 dest=/etc/init/gomasticate.conf owner=root group=root mode=0644"
+
+- name: Start/Restart service
+  service: name=gomasticate state=restarted enabled=yes

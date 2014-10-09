@@ -23,7 +23,7 @@
     GOBIN: "{{ gobin }}"
     PATH: "{{ path }}"
     INSTALL: "{{ install }}"
-  shell: ./ansible_install.sh
+  shell: bash ansible_install.sh
          chdir="{{ compile }}"
 
 - name: mk install dir
@@ -37,6 +37,9 @@
 
 - name: copy log conf
   command: "cp -f {{ compile }}/seelog.xml {{ install }}/ "
+
+- name: copy conf file
+  command: "cp -f {{ compile }}/conf.yaml {{ install }}/ "
 
 - name: copy service file
   template: "src=goforward.conf.j2 dest=/etc/init/goforward.conf owner=root group=root mode=0644"

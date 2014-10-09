@@ -1,7 +1,11 @@
 - name: install deps
   apt: name='dnsmasq' state=latest
 
+- name: Copy dnsmasq configuration file
+  copy: src=dnsmasq.conf dest=/etc/dnsmasq.conf
+
 - name: configure dnsmasq
   copy: content='server=/consul/127.0.0.1#8600' dest=/etc/dnsmasq.d/10-consul
+  copy: content="server=8.8.8.8 \nserver=8.8.4.4" dest=/etc/dnsmasq.d/11-google
   notify:
     - restart dnsmasq
